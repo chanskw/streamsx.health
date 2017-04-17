@@ -4,6 +4,7 @@ The initial contribution consists of:
 
 * MLLP Server - listening for incoming connection from on a node on a specified port
 * HL7 Parser for ORU01 Messages - parser for parsing ORU01 messages and transforming them to SPL Tuples.  ORU01 messages represent observations gathered from devices, lab results, etc.
+* HL7 Parser for ADT Messages - parser for parsing ADT messages and extracting information from MSH, EVN, PID and PV1 segments.  Results are published as AdtEvent.
 
 When a message is recieved by the server, the server transforms the messages to SPL Tuples.  The SPL stream is then published with a specified topic.  Downstream applications can subscribe to that topic to analyze the ingested messages.
 
@@ -35,7 +36,9 @@ Set the following environment variables before starting Streams Studio:
 ## Running the Microservice at Command Line
 
 1.  `cd com.ibm.streamsx.health.hapi/release`
-1.  `./run.sh` - This runs the microservice Java code and submits the job to the streams instance as specified in your environment variable.  
+1.  There are two microservices:
+    * `./run.sh` - This runs the OBXORU01 microservice Java code and submits the job to the streams instance as specified in your environment variable.  
+    * `./runAdt.sh` - This runs the ADT microservice Java code and submits the job to the streams instance as specified in your environment variable.
 1.  To customize the port and topic for the microservice, add the following VM arguments when running run.sh
     * -Dport=`<port number>`
     * -Dtopic=`<topic to publish to>`
@@ -58,14 +61,17 @@ Set the following environment variables before starting Streams Studio:
 
 To run the application in Streams Studio:
 
-1.  Open OruR01Ingest class from com.ibm.streamsx.health.hapi.services
+1.  Open OruR01Ingest or AdtIngest class from com.ibm.streamsx.health.hapi.services
 2.  Create a Java launch configuration for this class.  
 3.  In the launch configuration, optionally specify the following as the VM argument:
     * -Dport=`<port number>`
     * -Dtopic=`<topic to publish to>`
 4.  Run this launch configuration.  This will generate the SPL application, and submit it to the instance as specified in the environment variables earlier.
-5.  To check that the microservice is running correctly, run the com.ibm.streamsx.health.spl::IngestObservation application from the com.ibm.streamsx.health.spl project.  By default, this application subscribes to "oru01" as the topic.  Modify this to match the topic being published by the service.
+5.  To check that the microservice is running correctly:
+    * For OruR01Ingest - run the com.ibm.streamsx.health.spl::IngestObservation application from the com.ibm.streamsx.health.spl project.  By default, this application subscribes to "oru01" as the topic.  Modify this to match the topic being published by the service.
+    * For AdtIngest - run the com.ibm.streamsx.health.spl::IngestAdt application from the com.ibm.streamsx.health.spl project.  By default, this application subscribes to "adt" as the topic.  
 
 # Dependencies
 
 * HAPI - [http://hl7api.sourceforge.net](http://hl7api.sourceforge.net)
+* com.ibm.streamsx.health.ingest

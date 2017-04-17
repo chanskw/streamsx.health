@@ -40,6 +40,9 @@ abstract public class AbstractHL7Service implements Serializable{
 		topology.addJarDependency("opt/lib/log4j-1.2.17.jar");
 		topology.addJarDependency("opt/lib/slf4j-api-1.6.6.jar");
 		topology.addJarDependency("opt/lib/slf4j-log4j12-1.6.6.jar");
+		topology.addJarDependency("opt/lib/gson-1.7.2.jar");
+		topology.addJarDependency("opt/lib/gson-1.7.2.jar");
+		topology.addJarDependency("opt/lib/com.ibm.streamsx.health.ingest.jar");
 	}
 	
 	protected int getPort(){

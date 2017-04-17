@@ -1,12 +1,20 @@
 package com.ibm.streamsx.health.simulate.beacon.generators;
 
+import com.ibm.streamsx.health.ingest.types.model.ReadingType;
+import com.ibm.streamsx.health.ingest.types.model.ReadingTypeCode;
+import com.ibm.streamsx.health.ingest.types.model.ReadingTypeSystem;
+
 public class HeartRateDataGenerator extends AbstractVitalsGenerator {
 	private static final long serialVersionUID = 1L;
 	
 	public HeartRateDataGenerator(String patientId) {
-		super(patientId, VitalsDataRange.NORMAL);
+		this(patientId, VitalsDataRange.NORMAL);
 	}
 
+	public HeartRateDataGenerator(String patientId, VitalsDataRange range) {
+		super(patientId, range);
+	}
+	
 	@Override
 	Double getNormalMin() {
 		return 60.0;
@@ -38,8 +46,8 @@ public class HeartRateDataGenerator extends AbstractVitalsGenerator {
 	}
 
 	@Override
-	String getReadingType() {
-		return "HR";
+	ReadingType getReadingType() {
+		return new ReadingType(ReadingTypeSystem.STREAMS_CODE_SYSTEM, ReadingTypeCode.HEART_RATE.getCode());
 	}
 
 	@Override
